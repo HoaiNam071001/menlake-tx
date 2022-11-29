@@ -1,0 +1,54 @@
+
+@import "~bootstrap/scss/bootstrap";
+
+// $cellWH: 32px;
+$cellWH: 42px;
+
+.tx-table {
+  display: flex;
+  overflow-y: auto;
+  background-color: #17081e;
+
+  .column {
+    display: flex;
+    flex-direction: column;
+
+    .cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: $cellWH;
+      min-width: $cellWH;
+      height: $cellWH;
+      min-height: $cellWH;
+      padding: 0.25rem;
+      border-bottom: 1px solid white;
+      border-left: 1px solid white;
+      cursor: pointer;
+
+      &.cell-tai {
+        .num-wrapper {
+          background-color: #000000;
+          color: white;
+        }
+      }
+
+      &.selected {
+        background-color: $primary;
+      }
+
+      .num-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        border-radius: 50%;
+        border: 1px solid white;
+        background-color: #dfd9cb;
+        font-weight: 500;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
