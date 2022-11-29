@@ -4,10 +4,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
+import { TxTableComponent } from './_components/tx-table/tx-table.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TxTableComponent
   ],
   imports: [
     BrowserModule,
