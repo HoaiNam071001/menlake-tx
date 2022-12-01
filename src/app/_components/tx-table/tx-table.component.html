@@ -6,7 +6,8 @@
       <div class="cell"
         [ngClass]="{'cell-tai': isTai(col[i]), 'selected': isSelectedCell(cellIndex, colIndex)}"
         (click)="onClickCell(cellIndex, colIndex)">
-        <div class="num-wrapper" *ngIf="col[i]"><span>{{colIndex}},{{cellIndex}}</span></div>
+        <!-- <div class="num-wrapper" *ngIf="col[i]"><span>{{colIndex}},{{cellIndex}}</span></div> -->
+        <div class="num-wrapper" *ngIf="col[i]"><span>{{col[i] || ''}}</span></div>
       </div>
     </ng-container>
   </div>
