@@ -18,6 +18,9 @@ export class MasterDataComponent implements OnInit {
   form: FormGroup;
   inputs: number[] = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
+  resultNumber: string;
+  resultTX: string;
+
   constructor(private fb: FormBuilder) {}
 
   get textform() {
@@ -71,13 +74,11 @@ export class MasterDataComponent implements OnInit {
     }
     const formValue: string = this.form.getRawValue().textform;
 
-    console.log(formValue);
     console.log(formValue?.split(','));
+    this.resultNumber = formValue;
 
     const TX: string[] = this.convertTX(formValue.split(','));
-
-    console.log(TX);
-    console.log(TX.toString());
+    this.resultTX = TX.toString();
     // this.form.controls['textform'].reset();
   }
 
