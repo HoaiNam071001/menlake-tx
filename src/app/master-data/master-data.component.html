@@ -1,0 +1,46 @@
+<div class="master-board">
+  <form [formGroup]="form">
+    <label>Enter 200 or &lt;200 numbers</label>
+    <textarea
+      #textbox
+      name="textbox"
+      multiple
+      rows = "1"
+      type="text"
+      (keyup)="onChangeHandler($event)"
+      class="form-control text"
+      formControlName="textform"
+    ></textarea>
+
+
+    <div class="input-board">
+      <button
+        *ngFor="let input of inputs"
+        class="input-item"
+        (click)="add(input)"
+      >
+        {{ input }}
+      </button>
+    </div>
+
+    <div
+      class="alert alert-danger p-1 m-1 text-break"
+      *ngIf="textform?.invalid && (textform?.dirty || textform?.touched)"
+    >
+      <div *ngIf="textform?.errors?.required">Input is required</div>
+      <div *ngIf="textform?.errors?.type === 1">
+          {{subStart(textform?.errors?.invalidInput)}}<span class="highlight">{{subEnd(textform?.errors?.invalidInput)}}</span>
+      </div>
+
+      <div *ngIf="textform?.errors?.type === 2">
+        Strings longer than 200 numbers
+    </div>
+    </div>
+
+    <div class="submit">
+      <button type="submit" class="btn btn-dark" (click)="onSubmit()">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
