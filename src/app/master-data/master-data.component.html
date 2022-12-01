@@ -5,9 +5,8 @@
       #textbox
       name="textbox"
       multiple
-      rows = "1"
+      rows = "3"
       type="text"
-      (keyup)="onChangeHandler($event)"
       class="form-control text"
       formControlName="textform"
     ></textarea>
@@ -28,7 +27,7 @@
       *ngIf="textform?.invalid && (textform?.dirty || textform?.touched)"
     >
       <div *ngIf="textform?.errors?.required">Input is required</div>
-      <div *ngIf="textform?.errors?.type === 1">
+      <div *ngIf="textform?.errors?.type === 1" class="m-2">
           {{subStart(textform?.errors?.invalidInput)}}<span class="highlight">{{subEnd(textform?.errors?.invalidInput)}}</span>
       </div>
 

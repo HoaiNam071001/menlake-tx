@@ -30,11 +30,11 @@ export class MasterDataComponent implements OnInit {
     });
   }
 
-  onChangeHandler(event:any) {
-    this.textbox.nativeElement.style.height = 'auto';
-    this.textbox.nativeElement.style.height =
-    (this.textbox.nativeElement.scrollHeight + 2) + 'px';
-  }
+  // onChangeHandler(event:any) {
+  //   this.textbox.nativeElement.style.height = 'auto';
+  //   this.textbox.nativeElement.style.height =
+  //   (this.textbox.nativeElement.scrollHeight + 2) + 'px';
+  // }
 
   textCusorEnd() {
     if (this.textbox) {
@@ -69,10 +69,20 @@ export class MasterDataComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    const formValue: string = this.form.getRawValue().text;
+    const formValue: string = this.form.getRawValue().textform;
+
     console.log(formValue);
-    console.log(formValue.split(','));
+    console.log(formValue?.split(','));
+
+    const TX: string[] = this.convertTX(formValue.split(','));
+
+    console.log(TX);
+    console.log(TX.toString());
     // this.form.controls['textform'].reset();
+  }
+
+  convertTX(val: string[]){
+    return val.map((item)=>Number(item) <= 10 ? 'X' : 'T');
   }
 
   subStart(index: number) {
