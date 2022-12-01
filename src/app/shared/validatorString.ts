@@ -19,7 +19,6 @@ export function validateInput(control: FormControl): ValidationErrors | null {
   let index = array.findIndex(invalidNumber);
   if (index !== -1) {
     let idx_String = 0;
-    console.log(index)
     if (index == 0) return { invalidInput: 0, type: 1 };
 
     idx_String = value.indexOf(',');
