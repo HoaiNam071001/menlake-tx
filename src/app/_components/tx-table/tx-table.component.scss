@@ -1,7 +1,6 @@
-
 @import "~bootstrap/scss/bootstrap";
 
-$cellWH: 32px;
+$cellWH: 33px;
 // $cellWH: 42px;
 
 .tx-table {
@@ -25,6 +24,7 @@ $cellWH: 32px;
       border-bottom: 1px solid white;
       border-left: 1px solid white;
       cursor: pointer;
+      transition: all 0.2s ease-in-out;
 
       &.cell-tai {
         .num-wrapper {
@@ -33,15 +33,27 @@ $cellWH: 32px;
         }
       }
 
-      &.selected {
+      &:hover {
         background-color: $primary;
+      }
+
+      &.is-searched {
+        .num-wrapper {
+          color: crimson;
+          border-color: crimson;
+        }
+      }
+
+      &.is-selected {
+        background-color: $primary;
+        color: white;
       }
 
       .num-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 13px;
+        font-size: 14px;
         border-radius: 50%;
         border: 1px solid white;
         background-color: #dfd9cb;

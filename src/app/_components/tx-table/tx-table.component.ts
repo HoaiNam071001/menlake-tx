@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-export interface SelectedPosition {
-  colIndex: number;
-  cellIndex: number;
-}
-
 export interface StartEndIndex {
   startIndex: number;
   endIndex: number;
+}
+
+export interface TxCell {
+  num: number;
+  index: number;
 }
 
 @Component({
@@ -19,27 +19,31 @@ export class TxTableComponent implements OnInit {
   @Input() numberStr = '';
   @Input() searchStr = '';
 
-  columns: number[][] = [];
+  numbers: number[] = [];
+  columns: TxCell[][] = [];
   maxArr = [0, 1, 2, 3, 4];
-  searchPositions: SelectedPosition[] = [];
   searchIndexs: StartEndIndex[] = [];
 
-  startCellIndex: number | undefined;
-  endCellIndex: number | undefined;
-  startColIndex: number | undefined;
-  endColIndex: number | undefined;
-  constructor() { }
+  selectedIndex!: StartEndIndex;
+  constructor() {
+    this.resetSelectedIndex();
+  }
+
 
   ngOnInit(): void {
     this.fetchData();
   }
 
+  resetSelectedIndex() {
+    this.selectedIndex = {
+      startIndex: -1,
+      endIndex: -1,
+    };
+  }
+
   fetchData() {
     this.createData();
     this.convertData();
-    console.log('numberStr', this.numberStr);
-    console.log('searchStr', this.searchStr);
-    console.log('searchPositions', this.searchPositions);
   }
 
   createData() {
@@ -50,52 +54,49 @@ export class TxTableComponent implements OnInit {
       const random = this.random();
       arr.push(random);
 
-      if (index > 9 && index < 21) {
+      if (index > 30 && index < 40) {
         searchArr.push(random);
       }
     }
 
     this.numberStr = arr.join(',');
     this.searchStr = searchArr.join(',');
-
-    this.numberStr = '3,4,5,6,7,8,9,10,3,4,5,6,7,8,4,5,6';
-    this.searchStr = '4,5,6';
   }
 
   convertData() {
     this.columns = [];
-    this.searchPositions = [];
-    const numbers = this.numberStr.split(',').map(e => +e);
-    this.updateSearchIndex(numbers);
+    this.numbers = this.numberStr.split(',').map(e => +e) || [];
+    this.updateSearchIndex(this.numbers);
 
-    const arr: number[] = [];
-    numbers.forEach((num, index) => {
+    const arr: TxCell[] = [];
+    this.numbers.forEach((num, index) => {
       const isTai = this.isTai(num);
-      const isAllTai = arr.every(e => this.isTai(e));
+      const isAllTai = arr.every(e => this.isTai(e.num));
 
-      if (arr.length > 0 && (isTai !== isAllTai || numbers.length === index + 1)) {
+      if (arr.length > 0 && (isTai !== isAllTai || this.numbers.length === index + 1)) {
         const sodu = arr.length % 5;
         if (sodu > 0) {
           const nums = arr.splice(0, sodu);
-          this.addSearchPositions(this.columns.length, nums.length);
           this.columns.push(nums);
         }
 
         while (arr.length > 0) {
           const nums = arr.splice(0, 5);
-          this.addSearchPositions(this.columns.length, nums.length);
           this.columns.push(nums);
         }
       }
 
-      arr.push(num);
+      arr.push({
+        num,
+        index
+      });
     });
+    console.log('this.columns', this.columns);
   }
 
 
   updateSearchIndex(numbers: number[]) {
     const searchNums = this.searchStr.split(',').map(e => +e);
-    console.log('searchNums', searchNums);
     this.searchIndexs = [];
 
     if (searchNums.length < 1) {
@@ -112,25 +113,6 @@ export class TxTableComponent implements OnInit {
         });
       }
     });
-
-    console.log('searchIndexs', this.searchIndexs);
-  }
-
-  addSearchPositions(colIndex: number, cell: number) {
-    // const searchStrIdx: number = this.searchStr ? this.numberStr.indexOf(this.searchStr) : -1;
-
-    // if (searchStrIdx === -1) {
-    //   return;
-    // }
-
-    // let cellIndex = 0;
-    // while (cellIndex < length) {
-    //   this.searchPositions.push({
-    //     colIndex,
-    //     cellIndex
-    //   });
-    //   cellIndex++;
-    // }
   }
 
   isTai(x = 0) {
@@ -163,37 +145,46 @@ export class TxTableComponent implements OnInit {
     this.fetchData();
   }
 
-  isSelectedCell(cellIndex: number, colIndex: number) {
-    return Boolean(this.startCellIndex! && this.endCellIndex! && this.startColIndex! && this.endColIndex!
-      && this.startColIndex! <= colIndex && colIndex <= this.endColIndex!);
-    // return Boolean(this.startCellIndex && this.endCellIndex && this.startColIndex && this.endColIndex
-    //   && this.startCellIndex <= cellIndex && cellIndex <= this.endCellIndex
-    //   && this.startColIndex <= colIndex && colIndex <= this.endColIndex);
+  isSearchedCell(cell: TxCell) {
+    return cell && this.searchIndexs.some(e => {
+      return e.startIndex <= cell.index && cell.index <= e.endIndex;
+    });
   }
 
-  onClickCell(cellIndex: number, colIndex: number) {
-    const value = this.columns[colIndex]?.[cellIndex];
-    if (!value || this.startColIndex !== undefined && this.endColIndex !== undefined) {
+  onClickCell(cell: TxCell, event: MouseEvent) {
+    if (!cell || !event.shiftKey) {
       this.resetSelectedIndex();
-    }
-    // debugger
-
-    if (this.startColIndex === undefined || colIndex <= this.startColIndex) {
-      this.startColIndex = colIndex;
-      this.startCellIndex = cellIndex;
       return;
     }
 
-    this.endColIndex = colIndex;
-    this.endCellIndex = cellIndex;
+    const index = cell.index;
+
+    if (this.selectedIndex.startIndex > index) {
+      this.selectedIndex.endIndex = this.selectedIndex.startIndex;
+      this.selectedIndex.startIndex = index;
+      return;
+    }
+
+    if (this.selectedIndex.startIndex === -1 || this.selectedIndex.startIndex > index || this.selectedIndex.endIndex !== -1) {
+      this.selectedIndex.startIndex = index;
+      this.selectedIndex.endIndex = -1;
+      return;
+    }
+
+    this.selectedIndex.endIndex = index;
   }
 
-  resetSelectedIndex() {
-    console.log('reset');
-    this.startColIndex = undefined;
-    this.endColIndex = undefined;
-    this.startCellIndex = undefined;
-    this.endCellIndex = undefined;
+  isSelectedCell(index: number) {
+    if (!index) { return false; }
+
+    if (this.selectedIndex.startIndex === index && this.selectedIndex.endIndex === -1) {
+      return true;
+    }
+
+    return this.selectedIndex.startIndex <= index && index <= this.selectedIndex.endIndex;
   }
 
+  getSelectedCells() {
+    return this.numbers.filter((e, index) => this.selectedIndex.startIndex <= index && index <= this.selectedIndex.endIndex);
+  }
 }

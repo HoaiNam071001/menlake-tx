@@ -4,16 +4,17 @@
   <div class="column" *ngFor="let col of columns; index as colIndex">
     <ng-container *ngFor="let i of maxArr; index as cellIndex">
       <div class="cell"
-        [ngClass]="{'cell-tai': isTai(col[i]), 'selected': isSelectedCell(cellIndex, colIndex)}"
-        (click)="onClickCell(cellIndex, colIndex)">
-        <!-- <div class="num-wrapper" *ngIf="col[i]"><span>{{colIndex}},{{cellIndex}}</span></div> -->
-        <div class="num-wrapper" *ngIf="col[i]"><span>{{col[i] || ''}}</span></div>
+        [ngClass]="{
+          'cell-tai': isTai(col[i]?.num),
+          'is-searched': isSearchedCell(col[i]),
+          'is-selected': col[i] && isSelectedCell(col[i].index)
+        }"
+        (click)="onClickCell(col[i], $event)">
+        <div class="num-wrapper" *ngIf="col[i]?.num"><span>{{col[i]?.num || ''}}</span></div>
+        <!-- <div class="num-wrapper" *ngIf="col[i]?.num"><span>{{col[i]?.index}}</span></div> -->
       </div>
     </ng-container>
   </div>
 </div>
 
-<div>Start Col: {{startColIndex}}</div>
-<div>Start Cel: {{startCellIndex}}</div>
-<div>End Col: {{endColIndex}}</div>
-<div>End Cel: {{endCellIndex}}</div>
+<div>Selected Cells: {{getSelectedCells()}}</div>
