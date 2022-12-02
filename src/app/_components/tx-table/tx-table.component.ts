@@ -7,6 +7,7 @@ export interface StartEndIndex {
 
 export interface TxCell {
   num: number;
+  alias: string;
   index: number;
 }
 
@@ -17,7 +18,7 @@ export interface TxCell {
 })
 export class TxTableComponent implements OnInit {
   @Input() numberStr = '';
-  @Input() searchStr = '';
+  @Input() searchStr = 'T,X,T,X';
 
   numbers: number[] = [];
   columns: TxCell[][] = [];
@@ -48,19 +49,12 @@ export class TxTableComponent implements OnInit {
 
   createData() {
     const arr = [];
-    const searchArr = [];
-    this.searchStr = '';
     for (let index = 0; index < 200; index++) {
       const random = this.random();
       arr.push(random);
-
-      if (index > 30 && index < 40) {
-        searchArr.push(random);
-      }
     }
 
     this.numberStr = arr.join(',');
-    this.searchStr = searchArr.join(',');
   }
 
   convertData() {
@@ -71,6 +65,7 @@ export class TxTableComponent implements OnInit {
     const arr: TxCell[] = [];
     this.numbers.forEach((num, index) => {
       const isTai = this.isTai(num);
+      const alias = isTai ? 'T' : 'X';
       const isAllTai = arr.every(e => this.isTai(e.num));
 
       if (arr.length > 0 && (isTai !== isAllTai || this.numbers.length === index + 1)) {
@@ -88,6 +83,7 @@ export class TxTableComponent implements OnInit {
 
       arr.push({
         num,
+        alias,
         index
       });
     });
@@ -96,7 +92,7 @@ export class TxTableComponent implements OnInit {
 
 
   updateSearchIndex(numbers: number[]) {
-    const searchNums = this.searchStr.split(',').map(e => +e);
+    const searchNums = this.searchStr.split(',').map(e => +e || e);
     this.searchIndexs = [];
 
     if (searchNums.length < 1) {
@@ -105,7 +101,9 @@ export class TxTableComponent implements OnInit {
 
     numbers.forEach((num, index) => {
       if (searchNums.every((n, i) => {
-        return n === numbers[index + i];
+        return (n === numbers[index + i])
+          || (n === 'X' && !this.isTai(numbers[index + i]))
+          || (n === 'T' && this.isTai(numbers[index + i]));
       })) {
         this.searchIndexs.push({
           startIndex: index,
