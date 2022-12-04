@@ -6,17 +6,21 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { TxTableComponent } from './_components/tx-table/tx-table.component';
 import { MasterDataComponent } from './master-data/master-data.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BrightComponent } from './bright/bright.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TxTableComponent,
-    MasterDataComponent
+    MasterDataComponent,
+    BrightComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SharedModule,
+    ModalModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

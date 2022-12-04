@@ -14,6 +14,7 @@ import { CollapseDirective, CollapseModule } from 'ngx-bootstrap/collapse';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { ErrorInputComponent } from './error-input/error-input.component';
 
 const angularModules = [
   CommonModule,
@@ -37,6 +38,8 @@ const libraryModules = [
 ];
 @NgModule({
   declarations: [
+
+    ErrorInputComponent
   ],
   imports: [
     ...angularModules,
@@ -47,6 +50,7 @@ const libraryModules = [
   exports: [
     ...angularModules,
     ...libraryModules,
+    ErrorInputComponent
   ],
 })
 export class SharedModule { }

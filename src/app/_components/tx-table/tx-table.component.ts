@@ -61,7 +61,10 @@ export class TxTableComponent implements OnInit {
     this.columns = [];
     this.numbers = this.numberStr.split(',').map(e => +e) || [];
     this.updateSearchIndex(this.numbers);
+    this.getColumns();
+  }
 
+  getColumns(){
     const arr: TxCell[] = [];
     this.numbers.forEach((num, index) => {
       const isTai = this.isTai(num);
@@ -87,9 +90,9 @@ export class TxTableComponent implements OnInit {
         index
       });
     });
+
     console.log('this.columns', this.columns);
   }
-
 
   updateSearchIndex(numbers: number[]) {
     const searchNums = this.searchStr.split(',').map(e => +e || e);

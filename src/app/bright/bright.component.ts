@@ -1,47 +1,54 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { validateInput } from '../shared/validatorString';
+import { TxTableComponent } from '../_components/tx-table/tx-table.component';
 
 @Component({
-  selector: 'app-master-data',
-  templateUrl: './master-data.component.html',
-  styleUrls: [
-    './master-data.component.scss',
-    '../_components/tx-table/tx-table.component.scss',
-  ],
+  selector: 'app-bright',
+  templateUrl: './bright.component.html',
+  styleUrls: ['./bright.component.scss', '../_components/tx-table/tx-table.component.scss','../master-data/master-data.component.scss']
 })
-export class MasterDataComponent implements OnInit {
+export class BrightComponent extends TxTableComponent implements OnInit {
   @ViewChild('textbox') textbox: ElementRef;
   form: FormGroup;
   inputs: number[] = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+  modalRef!: BsModalRef;
   resultNumber: string;
   resultTX: string;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private modalService: BsModalService) {
+    super();
+  }
 
   get textform() {
     return this.form.get('textform');
+  }
+  get name() {
+    return this.form.get('name');
   }
 
   ngOnInit(): void {
     this.form = this.fb.group({
       textform: new FormControl('', [Validators.required, validateInput]),
+      name: new FormControl('', [Validators.required]),
     });
   }
 
-  // onChangeHandler(event:any) {
-  //   this.textbox.nativeElement.style.height = 'auto';
-  //   this.textbox.nativeElement.style.height =
-  //   (this.textbox.nativeElement.scrollHeight + 2) + 'px';
-  // }
+  convertData() {
+    this.numberStr = String(this.textform?.value);
+    this.columns = [];
+    this.numbers = this.numberStr.split(',').map(e => +e) || [];
+    this.getColumns();
+  }
 
   textCusorEnd() {
-    if (this.textbox) {
+    if (this.textbox?.nativeElement?.value) {
       let end = this.textbox.nativeElement;
       let len = end.value.length;
       if (end.setSelectionRange) {
@@ -79,10 +86,24 @@ export class MasterDataComponent implements OnInit {
 
     const TX: string[] = this.convertTX(formValue.split(','));
     this.resultTX = TX.toString();
-    // this.form.controls['textform'].reset();
   }
 
   convertTX(val: string[]) {
     return val.map((item) => (Number(item) <= 10 ? 'X' : 'T'));
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.convertData();
+    this.modalRef = this.modalService.show(template);
+  }
+
+  reset(){
+    this.form.controls['textform'].reset('');
+    this.form.controls['name'].reset('');
+  }
+
+  hide(){
+    this.modalRef.hide();
+    this.reset();
   }
 }
