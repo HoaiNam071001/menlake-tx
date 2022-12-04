@@ -6,7 +6,6 @@ $cellWH: 33px;
 .tx-table {
   display: flex;
   overflow-y: auto;
-  background-color: #17081e;
 
   .column {
     display: flex;
@@ -25,6 +24,7 @@ $cellWH: 33px;
       border-left: 1px solid white;
       cursor: pointer;
       transition: all 0.2s ease-in-out;
+      background-color: #17081e;
 
       &.cell-tai {
         .num-wrapper {
