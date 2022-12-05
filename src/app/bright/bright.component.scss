@@ -1,0 +1,19 @@
+::ng-deep.modal-dialog{
+  width: 700px;
+  max-width:95%;
+}
+.btn-circle{
+  width: 30px;
+  height: 30px;
+  padding:0px;
+  border:0px;
+  &:disabled{
+    opacity: 0.6;
+  }
+}
+.height-m{
+  min-height: 50px;
+}
+.ms-auto{
+  margin-right: auto;
+}

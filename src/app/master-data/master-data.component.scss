@@ -14,32 +14,6 @@
 
   }
 
-  .input-board{
-    display: flex;
-    flex-wrap: wrap;
-    margin: 20px 0;
-    .input-item{
-      margin: 5px;
-      min-width: 31px;
-      min-height: 31px;
-      border-radius: 50%;
-      border: 0;
-      font-size: 14px;
-      background-color: rgb(0 123 255);
-      color: #fff;
-      &:hover{
-        opacity: 0.9;
-      }
-      &:active{
-        background-color: rgb(0, 67, 139);
-
-      }
-    }
-  }
-  .highlight{
-    color: rgb(0, 0, 0);background-color:rgb(255, 174, 53);
-  }
-
   .text-break{
     word-break: break-word;
   }
@@ -56,23 +30,29 @@
 }
 
 
-::-webkit-scrollbar {
-  width: 5px;
+.input-board{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  .input-item{
+    margin: 5px;
+    min-width: 31px;
+    min-height: 31px;
+    border-radius: 50%;
+    border: 0;
+    font-size: 14px;
+    background-color: rgb(0 123 255);
+    color: #fff;
+    &:hover{
+      opacity: 0.9;
+    }
+    &:active{
+      background-color: rgb(0, 67, 139);
+
+    }
+  }
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
-
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(132, 132, 132);
+.w-full{
+  width: 100%;
 }

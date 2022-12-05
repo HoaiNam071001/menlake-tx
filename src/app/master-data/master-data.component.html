@@ -1,3 +1,5 @@
+<app-bright></app-bright>
+
 <div class="master-board">
   <form [formGroup]="form">
     <label>Enter 200 or &lt;200 numbers</label>
@@ -5,13 +7,11 @@
       #textbox
       name="textbox"
       multiple
-      rows = "3"
+      rows="3"
       type="text"
       class="form-control text"
       formControlName="textform"
     ></textarea>
-
-
     <div class="input-board">
       <button
         *ngFor="let input of inputs"
@@ -21,27 +21,18 @@
         {{ input }}
       </button>
     </div>
-
-    <div
-      class="alert alert-danger p-1 m-1 text-break"
-      *ngIf="textform?.invalid && (textform?.dirty || textform?.touched)"
-    >
-      <div *ngIf="textform?.errors?.required">Input is required</div>
-      <div *ngIf="textform?.errors?.type === 1" class="m-2">
-          {{subStart(textform?.errors?.invalidInput)}}<span class="highlight">{{subEnd(textform?.errors?.invalidInput)}}</span>
-      </div>
-
-      <div *ngIf="textform?.errors?.type === 2">
-        Strings longer than 200 numbers
-    </div>
-    </div>
-
+    <app-error-input [textform]="textform"></app-error-input>
     <div class="submit">
-      <button type="submit" class="btn btn-dark" (click)="onSubmit()">
+      <button
+        type="submit"
+        class="btn btn-dark"
+        (click)="onSubmit()"
+        [disabled]="textform?.invalid"
+      >
         Submit
       </button>
     </div>
-    <div>text: {{resultNumber}}</div>
-    <div>TX: {{resultTX}}</div>
+    <div>text: {{ resultNumber }}</div>
+    <div>TX: {{ resultTX }}</div>
   </form>
 </div>

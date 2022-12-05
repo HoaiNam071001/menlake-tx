@@ -27,7 +27,7 @@ export class TxTableComponent implements OnInit, OnChanges {
 
   selectedIndex!: StartEndIndex;
   constructor(
-    private clipboardService: ClipboardService,
+    protected clipboardService: ClipboardService,
   ) {
     this.resetSelectedIndex();
   }
@@ -58,7 +58,10 @@ export class TxTableComponent implements OnInit, OnChanges {
     this.columns = [];
     this.numbers = this.numberStr.split(',').map(e => +e) || [];
     this.updateSearchIndex(this.numbers);
-    console.log('this.numbers', this.numbers.toString());
+    this.getColumns();
+  }
+
+  getColumns(){
     const arr: TxCell[] = [];
     this.numbers.forEach((num, index) => {
       const isTai = this.isTai(num);
@@ -94,7 +97,6 @@ export class TxTableComponent implements OnInit, OnChanges {
       this.columns.push(nums);
     }
   }
-
 
   updateSearchIndex(numbers: number[]) {
     const searchNums = this.keyword.toUpperCase().split(',').map(e => +e || e);
