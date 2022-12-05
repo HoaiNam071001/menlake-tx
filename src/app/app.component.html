@@ -1,13 +1,11 @@
 <!-- <router-outlet></router-outlet> -->
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <app-tx-table></app-tx-table>
-    </div>
-    <div class="col-12">
-      <app-bright></app-bright>
-      <app-master-data></app-master-data>
-
-    </div>
-  </div>
+<div>
+  <tabset>
+    <tab heading="Tab search" id="tab1">
+      <div class="p-3"><app-home></app-home></div>
+    </tab>
+    <tab heading="Tab Master Data">
+      <div class="p-3"><app-master-data></app-master-data></div>
+    </tab>
+  </tabset>
 </div>

@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ClipboardService } from 'ngx-clipboard';
 export interface StartEndIndex {
   startIndex: number;
   endIndex: number;
@@ -16,9 +16,9 @@ export interface TxCell {
   templateUrl: './tx-table.component.html',
   styleUrls: ['./tx-table.component.scss']
 })
-export class TxTableComponent implements OnInit {
+export class TxTableComponent implements OnInit, OnChanges {
   @Input() numberStr = '';
-  @Input() searchStr = 'T,X,T,X';
+  @Input() keyword = '';
 
   numbers: number[] = [];
   columns: TxCell[][] = [];
@@ -26,12 +26,19 @@ export class TxTableComponent implements OnInit {
   searchIndexs: StartEndIndex[] = [];
 
   selectedIndex!: StartEndIndex;
-  constructor() {
+  constructor(
+    protected clipboardService: ClipboardService,
+  ) {
     this.resetSelectedIndex();
   }
 
 
   ngOnInit(): void {
+    // this.fetchData();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // console.log('changes', changes);
     this.fetchData();
   }
 
@@ -43,18 +50,8 @@ export class TxTableComponent implements OnInit {
   }
 
   fetchData() {
-    this.createData();
+    this.resetSelectedIndex();
     this.convertData();
-  }
-
-  createData() {
-    const arr = [];
-    for (let index = 0; index < 200; index++) {
-      const random = this.random();
-      arr.push(random);
-    }
-
-    this.numberStr = arr.join(',');
   }
 
   convertData() {
@@ -71,17 +68,9 @@ export class TxTableComponent implements OnInit {
       const alias = isTai ? 'T' : 'X';
       const isAllTai = arr.every(e => this.isTai(e.num));
 
-      if (arr.length > 0 && (isTai !== isAllTai || this.numbers.length === index + 1)) {
-        const sodu = arr.length % 5;
-        if (sodu > 0) {
-          const nums = arr.splice(0, sodu);
-          this.columns.push(nums);
-        }
-
-        while (arr.length > 0) {
-          const nums = arr.splice(0, 5);
-          this.columns.push(nums);
-        }
+      // if (arr.length > 0 && (isTai !== isAllTai || this.numbers.length === index + 1)) {
+      if (arr.length > 0 && isTai !== isAllTai) {
+        this.pushColumns(arr);
       }
 
       arr.push({
@@ -89,13 +78,28 @@ export class TxTableComponent implements OnInit {
         alias,
         index
       });
-    });
 
-    console.log('this.columns', this.columns);
+      if (this.numbers.length === index + 1) {
+        this.pushColumns(arr);
+      }
+    });
+  }
+
+  pushColumns(arr: TxCell[] = []) {
+    const sodu = arr.length % 5;
+    if (sodu > 0) {
+      const nums = arr.splice(0, sodu);
+      this.columns.push(nums);
+    }
+
+    while (arr.length > 0) {
+      const nums = arr.splice(0, 5);
+      this.columns.push(nums);
+    }
   }
 
   updateSearchIndex(numbers: number[]) {
-    const searchNums = this.searchStr.split(',').map(e => +e || e);
+    const searchNums = this.keyword.toUpperCase().split(',').map(e => +e || e);
     this.searchIndexs = [];
 
     if (searchNums.length < 1) {
@@ -124,26 +128,8 @@ export class TxTableComponent implements OnInit {
     return !this.isTai(x);
   }
 
-  random(min = 3, max = 18) {
-
-    // find diff
-    const difference = max - min;
-
-    // generate random number
-    let rand = Math.random();
-
-    // multiply with difference
-    rand = Math.floor(rand * difference);
-
-    // add with min value
-    rand = rand + min;
-
-    return rand;
-  }
-
   refresh() {
     this.resetSelectedIndex();
-    this.fetchData();
   }
 
   isSearchedCell(cell: TxCell) {
@@ -153,7 +139,8 @@ export class TxTableComponent implements OnInit {
   }
 
   onClickCell(cell: TxCell, event: MouseEvent) {
-    if (!cell || !event.shiftKey) {
+    // if (!cell || !event.shiftKey) {
+    if (!cell) {
       this.resetSelectedIndex();
       return;
     }
@@ -175,8 +162,10 @@ export class TxTableComponent implements OnInit {
     this.selectedIndex.endIndex = index;
   }
 
-  isSelectedCell(index: number) {
-    if (!index) { return false; }
+  isSelectedCell(cell: TxCell) {
+    if (!cell) { return false; }
+
+    const index = cell?.index;
 
     if (this.selectedIndex.startIndex === index && this.selectedIndex.endIndex === -1) {
       return true;
@@ -185,7 +174,11 @@ export class TxTableComponent implements OnInit {
     return this.selectedIndex.startIndex <= index && index <= this.selectedIndex.endIndex;
   }
 
-  getSelectedCells() {
+  get selectedCells() {
     return this.numbers.filter((e, index) => this.selectedIndex.startIndex <= index && index <= this.selectedIndex.endIndex);
+  }
+
+  clipboard() {
+    this.clipboardService.copy(this.selectedCells.toString());
   }
 }

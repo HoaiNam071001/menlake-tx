@@ -15,12 +15,14 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ErrorInputComponent } from './error-input/error-input.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 const angularModules = [
   CommonModule,
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
+  ClipboardModule,
 ];
 
 const libraryModules = [

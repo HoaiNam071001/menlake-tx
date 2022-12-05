@@ -1,15 +1,21 @@
-<div class="bright">
+<div class="bright container">
   <form [formGroup]="form">
     <!-- <ng-template *ngTemplateOutlet="buttonTemplate"></ng-template> -->
-    <div>
-      <button class="btn btn-dark" (click)="openModal(template)">
+    <div clas="row">
+      <div class="col-12">
+        <button class="btn btn-outline-primary" (click)="openModal(template)">
         Create stand bright
       </button>
+      </div>
+
     </div>
 
     <ng-template #template>
       <div class="modal-header">
-        <h4 class="modal-title pull-left">Standard bright</h4>
+        <h5 class="modal-title pull-left">Standard bright</h5>
+        <button type="submit" class="btn btn-info ml-2" (click)="reset()">
+          Reset
+        </button>
         <button
           type="button"
           class="close btn-close pull-right"
@@ -21,20 +27,20 @@
       </div>
       <div class="modal-body">
         <div class="container">
-          <div class="row my-3">
-            <div class="col-md-12 col-lg-2">
+          <div class="row mb-1">
+            <div class="col-12 col-lg-2">
               <div class="d-flex flex-wrap">
                 <p>Preview</p>
                 <button
-                  class="btn btn-primary rounded-circle btn-circle m-2"
-                  [disabled]="textform?.invalid"
-                  (click)="convertData()"
-                >
+                class="btn-primary rounded-circle btn-circle mx-2"
+                [disabled]="textform?.invalid"
+                (click)="convertData()"
+              >
                 <i class="bi bi-arrow-clockwise"></i>
-                </button>
+              </button>
               </div>
             </div>
-            <div class="col-sm-12 col-lg-10">
+            <div class="col-11 col-lg-9">
               <div class="tx-table">
                 <div
                   class="column"
@@ -55,9 +61,13 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-1">
+
+            </div>
           </div>
 
-          <div class="row my-3">
+          <div class="row my-1">
             <div class="col-md-12 col-lg-2">Data</div>
             <div class="col-sm-12 col-lg-10">
               <textarea
@@ -70,20 +80,6 @@
               </div>
             </div>
           </div>
-
-          <div class="row mt-3">
-            <div class="col-md-12 col-lg-2">Name</div>
-            <div class="col-sm-12 col-lg-10 height-m">
-              <input type="text" class="form-control" formControlName="name" />
-              <div
-                class="text-danger p-1 m-1 text-break"
-                *ngIf="name?.invalid && (name?.dirty || name?.touched)"
-              >
-                <div *ngIf="name?.errors?.required">Name is required</div>
-              </div>
-            </div>
-          </div>
-
           <div class="row">
             <div class="input-board">
               <button
@@ -95,17 +91,21 @@
               </button>
             </div>
           </div>
-          <div class="row d-flex p-3">
-            <button
-              type="submit"
-              class="btn btn-info ms-auto"
-              (click)="reset()"
-            >
-              Reset
-            </button>
-            <button class="btn btn-light m-1" (click)="hide()">
-              Cancel
-            </button>
+          <div class="row mt-1">
+            <div class="col-md-12 col-lg-2">Name</div>
+            <div class="col-sm-12 col-lg-10 height-m">
+              <input type="text" class="form-control" formControlName="name" />
+              <div
+                class="text-danger pt-1"
+                *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+              >
+                <div *ngIf="name?.errors?.required">Name is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex justify-content-end">
+            <button class="btn btn-light mr-1" (click)="hide()">Cancel</button>
             <button type="submit" class="btn btn-dark m-1" (click)="onSubmit()">
               Submit
             </button>

@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ClipboardService } from 'ngx-clipboard';
 import { validateInput } from '../shared/validatorString';
 import { TxTableComponent } from '../_components/tx-table/tx-table.component';
 
@@ -22,8 +23,9 @@ export class BrightComponent extends TxTableComponent implements OnInit {
   resultNumber: string;
   resultTX: string;
 
-  constructor(private fb: FormBuilder, private modalService: BsModalService) {
-    super();
+  constructor(private fb: FormBuilder, private modalService: BsModalService,    protected clipboardService: ClipboardService,
+    ) {
+    super(clipboardService);
   }
 
   get textform() {
@@ -72,6 +74,7 @@ export class BrightComponent extends TxTableComponent implements OnInit {
         : this.textform?.value + (end !== ',' ? ',' : '') + input;
     this.form.controls['textform'].setValue(newValue);
     this.textCusorEnd();
+    if (this.textform?.valid) this.convertData();
   }
 
   onSubmit() {
@@ -100,6 +103,7 @@ export class BrightComponent extends TxTableComponent implements OnInit {
   reset(){
     this.form.controls['textform'].reset('');
     this.form.controls['name'].reset('');
+    this.convertData();
   }
 
   hide(){
