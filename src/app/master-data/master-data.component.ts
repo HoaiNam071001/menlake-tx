@@ -31,7 +31,8 @@ export class MasterDataComponent implements OnInit, OnDestroy {
   resultNumber: string;
   resultTX: string;
   reqSub: Subscription;
-
+  isSuccess = false;
+  isFailure = false;
   constructor(private fb: FormBuilder, private txService: TxService) {}
 
   get textform() {
@@ -90,6 +91,15 @@ export class MasterDataComponent implements OnInit, OnDestroy {
     this.reqSub?.unsubscribe();
 
     this.reqSub = this.txService.add(val).subscribe((res) => {
+      this.isSuccess = true;
+      setTimeout(() => {
+        this.isSuccess = false;
+      }, 3000);
+    },(err)=> {
+      this.isFailure = true;
+      setTimeout(() => {
+        this.isFailure = false;
+      }, 3000);
     });
   }
 
