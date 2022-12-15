@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { TxSearchRequest } from '../_model/tx.model';
+import { TxService } from '../_services/tx.service';
+import * as moment from 'moment';
 
 export const sizes = [200, 300, 400, 500, 600];
 
@@ -12,16 +15,39 @@ export class HomeComponent implements OnInit {
   keyword = '';
   size = sizes[0];
   sizes = sizes;
+  isAllToday = -1;
 
-  constructor() { }
+  constructor(
+    private txService: TxService,
+  ) { }
 
   ngOnInit(): void {
     this.refresh();
   }
 
-
   refresh() {
-    this.generateData();
+    this.fetch();
+    // this.generateData();
+  }
+
+  fetch() {
+    let payload: TxSearchRequest;
+    if (this.size === this.isAllToday) {
+      payload = {
+        allDaysFlag: true,
+        time: moment().format('YYYY-MM-DD'),
+      };
+    } else {
+      payload = {
+        numberOfRecords: this.size,
+      };
+    }
+
+    this.txService.search(payload)
+      .subscribe(res => {
+      this.numberStr = res.map(e => e.numbers).join(',');
+      console.log('this.numberStr', this.numberStr);
+    });
   }
 
   changeSize(size: number) {
