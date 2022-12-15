@@ -11,7 +11,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { BrightComponent } from './bright/bright.component';
 
 import { HomeComponent } from './home/home.component';
-import { SimpleNotificationsModule } from 'angular2-notifications';
 
 @NgModule({
   declarations: [
@@ -28,11 +27,6 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
     HttpClientModule,
     SharedModule,
     ModalModule.forRoot(),
-    SimpleNotificationsModule.forRoot({
-      position: ['bottom', 'right'],
-      timeOut: 3000,
-    }),
-
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1576,13 +1576,6 @@
     "json-schema-traverse" "^0.4.1"
     "uri-js" "^4.2.2"
 
-"angular2-notifications@^12.0.0":
-  "integrity" "sha512-d+AjyPum2II1nXxOwbBu2eW2XSoBXJtLy+1/YgkbKcVGTiwYxYCCUVrDF/u9vUTrBC078jz03MbrOw9V7E92ig=="
-  "resolved" "https://registry.npmjs.org/angular2-notifications/-/angular2-notifications-12.0.0.tgz"
-  "version" "12.0.0"
-  dependencies:
-    "tslib" "^2.3.0"
-
 "ansi-colors@^3.0.0":
   "integrity" "sha512-hHUXGagefjN2iRrID63xckIvotOXOojhQKWIPUZ4mNUZ9nLZW+7FMNoE1lOkEhNWYsx/7ysGIuJYCiMAA9FnrA=="
   "resolved" "https://registry.npmjs.org/ansi-colors/-/ansi-colors-3.2.4.tgz"
@@ -8978,7 +8971,7 @@
   "resolved" "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   "version" "0.1.0"
 
-"zone.js@^0.10.2 || ^0.11.3", "zone.js@^0.11.4", "zone.js@~0.11.3":
+"zone.js@^0.10.2 || ^0.11.3", "zone.js@~0.11.3":
   "integrity" "sha512-82bctBg2hKcEJ21humWIkXRlLBBmrc3nN7DFh5LGGhcyycO2S7FN8NmdvlcKaGFDNVL4/9kFLmwmInTavdJERA=="
   "resolved" "https://registry.npmjs.org/zone.js/-/zone.js-0.11.8.tgz"
   "version" "0.11.8"

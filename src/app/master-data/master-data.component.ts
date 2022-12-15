@@ -14,7 +14,6 @@ import {
 import { Subscription } from 'rxjs';
 import { validateInput } from '../shared/validatorString';
 import { TxRequest } from '../_model/tx.model';
-import { NotifyService } from '../_services/notify.service';
 import { TxService } from '../_services/tx.service';
 
 @Component({
@@ -33,8 +32,7 @@ export class MasterDataComponent implements OnInit, OnDestroy {
   resultTX: string;
   reqSub: Subscription;
 
-  constructor(private fb: FormBuilder, private txService: TxService,
-    private notifyService: NotifyService) {}
+  constructor(private fb: FormBuilder, private txService: TxService) {}
 
   get textform() {
     return this.form.get('textform');
@@ -92,10 +90,7 @@ export class MasterDataComponent implements OnInit, OnDestroy {
     this.reqSub?.unsubscribe();
 
     this.reqSub = this.txService.add(val).subscribe((res) => {
-      this.notifyService.success('Your data has been saved', 'Successful')
-    },
-    (err)=>this.notifyService.error('failed process', 'Error')
-    );
+    });
   }
 
   convertTX(val: string[]) {
