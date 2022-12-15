@@ -91,6 +91,10 @@ export class MasterDataComponent implements OnInit, OnDestroy {
     this.reqSub?.unsubscribe();
 
     this.reqSub = this.txService.add(val).subscribe((res) => {
+      this.resultNumber = val.numbers;
+      this.resultTX = this.convertTX(val.numbers.split(',')).toString();
+      this.form.controls['textform'].setValue('');
+
       this.isSuccess = true;
       setTimeout(() => {
         this.isSuccess = false;
