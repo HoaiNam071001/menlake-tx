@@ -1,11 +1,21 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { validateInput } from '../shared/validatorString';
+import { TxRequest } from '../_model/tx.model';
+import { NotifyService } from '../_services/notify.service';
+import { TxService } from '../_services/tx.service';
 
 @Component({
   selector: 'app-master-data',
@@ -15,14 +25,16 @@ import { validateInput } from '../shared/validatorString';
     '../_components/tx-table/tx-table.component.scss',
   ],
 })
-export class MasterDataComponent implements OnInit {
+export class MasterDataComponent implements OnInit, OnDestroy {
   @ViewChild('textbox') textbox: ElementRef;
   form: FormGroup;
   inputs: number[] = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
   resultNumber: string;
   resultTX: string;
+  reqSub: Subscription;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private txService: TxService,
+    private notifyService: NotifyService) {}
 
   get textform() {
     return this.form.get('textform');
@@ -72,17 +84,25 @@ export class MasterDataComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    const formValue: string = this.form.getRawValue().textform;
+    const val: TxRequest = {
+      numbers: this.form.getRawValue().textform,
+      createdAt: new Date().toISOString(),
+    };
 
-    console.log(formValue?.split(','));
-    this.resultNumber = formValue;
+    this.reqSub?.unsubscribe();
 
-    const TX: string[] = this.convertTX(formValue.split(','));
-    this.resultTX = TX.toString();
-    // this.form.controls['textform'].reset();
+    this.reqSub = this.txService.add(val).subscribe((res) => {
+      this.notifyService.success('Your data has been saved', 'Successful')
+    },
+    (err)=>this.notifyService.error('failed process', 'Error')
+    );
   }
 
   convertTX(val: string[]) {
     return val.map((item) => (Number(item) <= 10 ? 'X' : 'T'));
+  }
+
+  ngOnDestroy(): void {
+    this.reqSub?.unsubscribe();
   }
 }
