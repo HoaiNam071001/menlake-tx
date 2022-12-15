@@ -26,7 +26,25 @@
       height: 40px;
     }
   }
-
+  .toast-custom{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
+    max-width: 90%;
+    border-radius: 5px;
+    color: #fff;
+    & hr{
+      margin: 5px;
+    }
+  }
+  .btn-x{
+    border: 0;
+    margin: 0px;
+    height: 15px;
+    color: #fff;
+    background-color: #fff0;
+  }
 }
 
 

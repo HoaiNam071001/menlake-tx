@@ -35,4 +35,25 @@
     <div>text: {{ resultNumber }}</div>
     <div>TX: {{ resultTX }}</div>
   </form>
+
+  <div class="toast-custom bg-success" [hidden]="!isSuccess">
+    <div class="d-flex justify-content-center">
+      <div>SUCCESS</div>
+      <button (click)="isSuccess = false" class="btn-x ml-auto">
+        X
+      </button>
+    </div>
+    <hr />
+    <div>Data has been saved successfully</div>
+  </div>
+  <div class="toast-custom bg-danger" [hidden]="!isFailure">
+    <div class="d-flex justify-content-center">
+      <div>FAILURE</div>
+      <button (click)="isFailure = false" class="btn-x ml-auto">
+        X
+      </button>
+    </div>
+    <hr />
+    <div>Data has been saved failed</div>
+  </div>
 </div>

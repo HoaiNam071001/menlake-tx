@@ -11,13 +11,14 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { BrightComponent } from './bright/bright.component';
 
 import { HomeComponent } from './home/home.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     TxTableComponent,
     MasterDataComponent,
     BrightComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
