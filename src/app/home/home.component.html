@@ -1,4 +1,4 @@
-<div class="container">
+<div>
   <div class="row">
     <div class="col-12 d-flex align-items-center">
       <button class="btn btn-primary mb-3" (click)="refresh()">Refresh</button>
@@ -11,13 +11,16 @@
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
           <li role="menuitem" *ngFor="let size of sizes" (click)="changeSize(size)"><span
               class="dropdown-item">{{size}}</span></li>
-          <li role="menuitem"><span class="dropdown-item">All Today</span></li>
+          <li role="menuitem" (click)="changeSize(isAllToday)"><span class="dropdown-item">All Today</span></li>
         </ul>
       </div>
       </div>
 
     <div class="col-12">
-      <app-tx-table [numberStr]="numberStr" [keyword]="keyword"></app-tx-table>
+      <app-tx-table *ngIf="numberStr"
+        [numberStr]="numberStr"
+        [keyword]="keyword">
+      </app-tx-table>
     </div>
 
     <div class="col-12">

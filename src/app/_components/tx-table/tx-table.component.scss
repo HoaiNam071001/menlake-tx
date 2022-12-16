@@ -1,5 +1,3 @@
-@import "~bootstrap/scss/bootstrap";
-
 $cellWH: 33px;
 // $cellWH: 42px;
 
@@ -34,7 +32,7 @@ $cellWH: 33px;
       }
 
       &:hover {
-        background-color: $primary;
+        background-color: #1a73e8;
       }
 
       &.is-searched {
@@ -45,7 +43,7 @@ $cellWH: 33px;
       }
 
       &.is-selected {
-        background-color: $primary;
+        background-color: #1a73e8;
         color: white;
       }
 
