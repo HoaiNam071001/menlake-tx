@@ -33,6 +33,7 @@ export class MasterDataComponent implements OnInit, OnDestroy {
   reqSub: Subscription;
   isSuccess = false;
   isFailure = false;
+  length: number = 0;
   constructor(private fb: FormBuilder, private txService: TxService) {}
 
   get textform() {
@@ -68,6 +69,10 @@ export class MasterDataComponent implements OnInit, OnDestroy {
     }
   }
 
+  change(){
+    this.length = String(this.textform?.value).split(",").length || 0;
+  }
+
   add(input: number) {
     const end = this.textform?.value[this.textform?.value.length - 1];
     const newValue =
@@ -83,8 +88,10 @@ export class MasterDataComponent implements OnInit, OnDestroy {
       this.form.markAllAsTouched();
       return;
     }
+    let numbers = String(this.form.getRawValue().textform).split(',').map(e=>e.trim());
+
     const val: TxRequest = {
-      numbers: this.form.getRawValue().textform,
+      numbers: numbers.toString(),
       createdAt: new Date().toISOString(),
     };
 

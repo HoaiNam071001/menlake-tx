@@ -68,12 +68,17 @@
           </div>
 
           <div class="row my-1">
-            <div class="col-md-12 col-lg-2">Data</div>
+            <div class="col-12">
+              <div class="p-1 ml-auto text-success" style="min-height:32px;"><span *ngIf="!textform?.invalid">{{length}} numbers</span></div>
+            </div>
+            <div class="col-md-12 col-lg-2">Data
+            </div>
             <div class="col-sm-12 col-lg-10">
               <textarea
                 class="w-full"
                 class="form-control text"
                 formControlName="textform"
+                (ngModelChange)="change()"
               ></textarea>
               <div class="mt-2">
                 <app-error-input [textform]="textform"></app-error-input>
