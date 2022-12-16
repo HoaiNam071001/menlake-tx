@@ -84,7 +84,6 @@ export class BrightComponent extends TxTableComponent implements OnInit {
     }
     const formValue: string = this.form.getRawValue().textform;
 
-    console.log(formValue?.split(','));
     this.resultNumber = formValue;
 
     const TX: string[] = this.convertTX(formValue.split(','));

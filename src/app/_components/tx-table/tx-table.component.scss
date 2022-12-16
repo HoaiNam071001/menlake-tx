@@ -1,9 +1,45 @@
 $cellWH: 33px;
 // $cellWH: 42px;
 
+:host {
+  display: block;
+  overflow: auto;
+}
+
+.tx-table-wrapper {
+  width: fit-content;
+}
+
+.time-group {
+  width: 100%;
+  height: 5px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  padding-top: 50px;
+  position: relative;
+
+  .time {
+    height: 5px;
+    background-color: #dfd9cb;
+    position: absolute;
+    left: 0;
+
+    &.chan {
+      background-color: #000000;
+    }
+    span {
+      position: absolute;
+      right: 0;
+      top: -30px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+}
+
 .tx-table {
   display: flex;
-  overflow-y: auto;
 
   .column {
     display: flex;
