@@ -22,6 +22,7 @@ export class BrightComponent extends TxTableComponent implements OnInit {
   modalRef!: BsModalRef;
   resultNumber: string;
   resultTX: string;
+  length: number = 0;
 
   constructor(private fb: FormBuilder, private modalService: BsModalService,    protected clipboardService: ClipboardService,
     ) {
@@ -40,6 +41,10 @@ export class BrightComponent extends TxTableComponent implements OnInit {
       textform: new FormControl('', [Validators.required, validateInput]),
       name: new FormControl('', [Validators.required]),
     });
+  }
+
+  change(){
+    this.length = String(this.textform?.value).split(",").length || 0;
   }
 
   convertData() {
@@ -83,9 +88,7 @@ export class BrightComponent extends TxTableComponent implements OnInit {
       return;
     }
     const formValue: string = this.form.getRawValue().textform;
-
     this.resultNumber = formValue;
-
     const TX: string[] = this.convertTX(formValue.split(','));
     this.resultTX = TX.toString();
   }

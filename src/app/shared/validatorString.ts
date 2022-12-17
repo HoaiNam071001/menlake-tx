@@ -27,6 +27,6 @@ export function validateInput(control: FormControl): ValidationErrors | null {
     }
 
     return { invalidInput: idx_String, type: 1 };
-  } else if (array.length > 200) return { invalidInput: 200, type: 2 };
+  } else if (array.length > 200) return { invalidInput: array.length, type: 2 };
   else return null;
 }

@@ -2,7 +2,10 @@
 
 <div class="master-board">
   <form [formGroup]="form">
-    <label>Enter 200 or &lt;200 numbers</label>
+    <div class="d-flex">
+      <label>Enter 200 or &lt;200 numbers</label>
+      <div class="p-1 ml-auto text-success" style="min-height:25px;"><span *ngIf="!textform?.invalid">{{length}} numbers</span></div>
+    </div>
     <textarea
       #textbox
       name="textbox"
@@ -11,6 +14,7 @@
       type="text"
       class="form-control text"
       formControlName="textform"
+      (ngModelChange)="change()"
     ></textarea>
     <div class="input-board">
       <button
@@ -27,7 +31,7 @@
         type="submit"
         class="btn btn-dark"
         (click)="onSubmit()"
-        [disabled]="textform?.invalid"
+        [disabled]="form.invalid"
       >
         Submit
       </button>
