@@ -1,5 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import * as moment from 'moment';
 import { ClipboardService } from 'ngx-clipboard';
+import { TxResponse, TxSearchResponse } from 'src/app/_model/tx.model';
 export interface StartEndIndex {
   startIndex: number;
   endIndex: number;
@@ -19,12 +21,16 @@ export interface TxCell {
 export class TxTableComponent implements OnInit, OnChanges {
   @Input() numberStr = '';
   @Input() keyword = '';
+  @Input() txResponses: TxSearchResponse[] = [];
 
   numbers: number[] = [];
   columns: TxCell[][] = [];
   maxArr = [0, 1, 2, 3, 4];
   searchIndexs: StartEndIndex[] = [];
-
+  timeBlocks: {
+    time: string;
+    width: string;
+  }[] = [];
   selectedIndex!: StartEndIndex;
   constructor(
     protected clipboardService: ClipboardService,
@@ -55,19 +61,38 @@ export class TxTableComponent implements OnInit, OnChanges {
 
   convertData() {
     this.columns = [];
+    if (this.txResponses && !this.numberStr) {
+      this.numberStr = this.txResponses.map(e => e.numbers).join(',');
+    }
+
     this.numbers = this.numberStr.split(',').map(e => +e) || [];
     this.updateSearchIndex(this.numbers);
     this.getColumns();
+    this.updateTimeBlock();
   }
 
-  getColumns(){
+  updateTimeBlock() {
+    let index = 0;
+    this.timeBlocks = this.txResponses.map((e, tIndex) => {
+      index += e.numbers.split(',').length - 1;
+      const found = this.columns.findIndex(column => column.some(c => c.index === index)) + 1;
+      return {
+        time: e.time,
+        width: tIndex === this.txResponses.length - 1 ? '100%' : found / this.columns.length * 100 + '%',
+      };
+    });
+
+    console.log('this.timeBlock1', this.timeBlocks);
+  }
+
+  getColumns() {
     const arr: TxCell[] = [];
     this.numbers.forEach((num, index) => {
       const isTai = this.isTai(num);
       const alias = isTai ? 'T' : 'X';
       const isAllTai = arr.every(e => this.isTai(e.num));
 
-      // if (arr.length > 0 && (isTai !== isAllTai || this.numbers.length === index + 1)) {
+      // Add column
       if (arr.length > 0 && isTai !== isAllTai) {
         this.pushColumns(arr);
       }
@@ -179,5 +204,9 @@ export class TxTableComponent implements OnInit, OnChanges {
 
   clipboard() {
     this.clipboardService.copy(this.selectedCells.toString());
+  }
+
+  getTimeUI(time: string) {
+    return moment(time).format('HH:mm DD/MM/YYYY');
   }
 }

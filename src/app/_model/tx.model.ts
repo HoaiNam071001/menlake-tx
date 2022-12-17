@@ -16,6 +16,6 @@ export interface TxSearchRequest {
 }
 
 export interface TxSearchResponse {
-  time?: number;
-  numbers?: boolean;
+  time: string;
+  numbers: string;
 }

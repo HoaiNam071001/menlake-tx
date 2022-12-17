@@ -6,7 +6,7 @@
       <div class="btn-group ml-auto" dropdown>
         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
           aria-controls="dropdown-basic">
-          {{size}} Records <span class="caret"></span>
+          {{size !== isAllToday ? size : 'All Today'}} Records <span class="caret"></span>
         </button>
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
           <li role="menuitem" *ngFor="let size of sizes" (click)="changeSize(size)"><span
@@ -17,8 +17,8 @@
       </div>
 
     <div class="col-12">
-      <app-tx-table *ngIf="numberStr"
-        [numberStr]="numberStr"
+      <app-tx-table
+        [txResponses]="txResponses"
         [keyword]="keyword">
       </app-tx-table>
     </div>

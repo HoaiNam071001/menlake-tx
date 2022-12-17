@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TxSearchRequest } from '../_model/tx.model';
-import { TxService } from '../_services/tx.service';
 import * as moment from 'moment';
+import { TxSearchRequest, TxSearchResponse } from '../_model/tx.model';
+import { TxService } from '../_services/tx.service';
 
 export const sizes = [200, 300, 400, 500, 600];
 
@@ -11,11 +11,12 @@ export const sizes = [200, 300, 400, 500, 600];
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  numberStr = '';
   keyword = '';
   size = sizes[0];
   sizes = sizes;
   isAllToday = -1;
+  txResponses: TxSearchResponse[] = [];
+  numberStr = '';
 
   constructor(
     private txService: TxService,
@@ -45,7 +46,9 @@ export class HomeComponent implements OnInit {
 
     this.txService.search(payload)
       .subscribe(res => {
-      this.numberStr = res.map(e => e.numbers).join(',');
+        this.txResponses = res;
+      // this.numberStr = res.map(e => e.numbers).join(',');
+      console.log('this.numberStr', this.txResponses.map(e => e.numbers));
     });
   }
 
@@ -55,7 +58,6 @@ export class HomeComponent implements OnInit {
   }
 
   onKeywordChange(event: any) {
-    console.log(event);
   }
 
   onSearch(input: any) {
