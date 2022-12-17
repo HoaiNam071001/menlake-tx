@@ -38,7 +38,6 @@ export class TxTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log('changes', changes);
     this.fetchData();
   }
 

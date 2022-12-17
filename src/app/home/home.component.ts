@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
     this.txService.search(payload)
       .subscribe(res => {
       this.numberStr = res.map(e => e.numbers).join(',');
-      console.log('this.numberStr', this.numberStr);
     });
   }
 
