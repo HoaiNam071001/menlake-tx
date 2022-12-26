@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import * as moment from 'moment';
 import { ClipboardService } from 'ngx-clipboard';
-import { TxResponse, TxSearchResponse } from 'src/app/_model/tx.model';
+import { TxResponse } from 'src/app/_model/tx.model';
 export interface StartEndIndex {
   startIndex: number;
   endIndex: number;
@@ -21,7 +21,7 @@ export interface TxCell {
 export class TxTableComponent implements OnInit, OnChanges {
   @Input() numberStr = '';
   @Input() keyword = '';
-  @Input() txResponses: TxSearchResponse[] = [];
+  @Input() txResponses: TxResponse[];
 
   numbers: number[] = [];
   columns: TxCell[][] = [];
@@ -61,11 +61,10 @@ export class TxTableComponent implements OnInit, OnChanges {
 
   convertData() {
     this.columns = [];
-    if (this.txResponses && !this.numberStr) {
+    if (this.txResponses) {
       this.numberStr = this.txResponses.map(e => e.numbers).join(',');
     }
-
-    this.numbers = this.numberStr.split(',').map(e => +e) || [];
+    this.numbers = this.numberStr.split(',').filter(e => e).map(e => +e) || [];
     this.updateSearchIndex(this.numbers);
     this.getColumns();
     this.updateTimeBlock();
@@ -73,16 +72,14 @@ export class TxTableComponent implements OnInit, OnChanges {
 
   updateTimeBlock() {
     let index = 0;
-    this.timeBlocks = this.txResponses.map((e, tIndex) => {
+    this.timeBlocks = this.txResponses?.map((e, tIndex) => {
       index += e.numbers.split(',').length - 1;
       const found = this.columns.findIndex(column => column.some(c => c.index === index)) + 1;
       return {
         time: e.time,
         width: tIndex === this.txResponses.length - 1 ? '100%' : found / this.columns.length * 100 + '%',
       };
-    });
-
-    console.log('this.timeBlock1', this.timeBlocks);
+    }) || [];
   }
 
   getColumns() {
@@ -204,6 +201,10 @@ export class TxTableComponent implements OnInit, OnChanges {
 
   clipboard() {
     this.clipboardService.copy(this.selectedCells.toString());
+  }
+
+  clipboardAsTX() {
+    this.clipboardService.copy(this.selectedCells.map(e => this.isTai(e) ? 'T' : 'X').toString());
   }
 
   getTimeUI(time: string) {

@@ -1,34 +1,40 @@
 
-<div class="tx-table-wrapper">
-  <div class="time-group">
-    <ng-container *ngFor="let t of timeBlocks; let index=index">
-      <div class="time"
-        [ngStyle]="{'width': t.width, 'z-index': -index}"
-        [ngClass]="{'chan': index%2===0}">
-        <span>{{getTimeUI(t.time)}}</span>
-      </div>
-    </ng-container>
-  </div>
-  <div class="tx-table">
-    <div class="time-group">
-      <div class="time"></div>
-    </div>
-    <div class="column" *ngFor="let col of columns; index as colIndex">
-      <ng-container *ngFor="let i of maxArr; index as cellIndex">
-        <div class="cell"
-          [ngClass]="{
-            'cell-tai': isTai(col[i]?.num),
-            'is-searched': isSearchedCell(col[i]),
-            'is-selected': isSelectedCell(col[i])
-          }"
-          (click)="onClickCell(col[i], $event)">
-          <div class="num-wrapper" *ngIf="col[i]?.num"><span>{{col[i]?.num || ''}}</span></div>
+<div class="main-wrapper">
+  <div class="tx-table-wrapper" *ngIf="numbers.length > 0;">
+    <div class="time-group" *ngIf="timeBlocks.length > 0">
+      <ng-container *ngFor="let t of timeBlocks; let index=index">
+        <div class="time"
+          [ngStyle]="{'width': t.width, 'z-index': -index}"
+          [ngClass]="{'chan': index%2===0}">
+          <span>{{getTimeUI(t.time)}}</span>
         </div>
       </ng-container>
     </div>
+    <div class="tx-table">
+      <div class="time-group">
+        <div class="time"></div>
+      </div>
+      <div class="column" *ngFor="let col of columns; index as colIndex">
+        <ng-container *ngFor="let i of maxArr; index as cellIndex">
+          <div class="cell"
+            [ngClass]="{
+              'cell-tai': isTai(col[i]?.num),
+              'is-searched': isSearchedCell(col[i]),
+              'is-selected': isSelectedCell(col[i])
+            }"
+            (click)="onClickCell(col[i], $event)">
+            <div class="num-wrapper" *ngIf="col[i]?.num"><span>{{col[i]?.num || ''}}</span></div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
   </div>
-
-  <div class="mt-3" *ngIf="selectedCells.length > 0">Selected: <span>{{selectedCells}}</span> <span class="text-primary ml-2 pointer" (click)="clipboard()">Copy to clipboard</span></div>
-
-  <div class="mt-3">{{searchIndexs.length > 0 ? searchIndexs.length + ' items found!' : ''}}</div>
 </div>
+
+<div class="mt-3" *ngIf="selectedCells.length > 0">
+  <span class="badge badge-light">Selected: <span>{{selectedCells}}</span></span>
+  <span class="btn btn-sm btn-light ml-1" (click)="clipboard()">Copy</span>
+  <span class="btn btn-sm btn-light ml-1" (click)="clipboardAsTX()">Copy as TX</span>
+</div>
+
+<div class="mt-3">{{searchIndexs.length > 0 ? searchIndexs.length + ' items found!' : ''}}</div>

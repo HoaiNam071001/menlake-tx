@@ -1,9 +1,6 @@
-<app-bright></app-bright>
-
 <div class="master-board">
   <form [formGroup]="form">
     <div class="d-flex">
-      <label>Enter 200 or &lt;200 numbers</label>
       <div class="p-1 ml-auto text-success" style="min-height:25px;"><span *ngIf="!textform?.invalid">{{length}} numbers</span></div>
     </div>
     <textarea
@@ -26,18 +23,28 @@
       </button>
     </div>
     <app-error-input [textform]="textform"></app-error-input>
-    <div class="submit">
-      <button
-        type="submit"
-        class="btn btn-dark"
-        (click)="onSubmit()"
-        [disabled]="form.invalid"
-      >
-        Submit
-      </button>
+    <ng-select
+        formControlName="name"
+        placeholder="Select game name"
+        [items]="gameTypes"
+        bindValue="value"
+        bindLabel="label"
+        [clearable]="false"
+        [searchable]="false">
+    </ng-select>
+    <div class="d-flex align-items-center mt-3">
+      <app-bright class="ml-auto"></app-bright>
+      <div class="submit">
+        <button
+          type="submit"
+          class="btn btn-dark"
+          (click)="onSubmit()"
+          [disabled]="form.invalid"
+        >
+          Submit
+        </button>
+      </div>
     </div>
-    <div>text: {{ resultNumber }}</div>
-    <div>TX: {{ resultTX }}</div>
   </form>
 
   <div class="toast-custom bg-success" [hidden]="!isSuccess">

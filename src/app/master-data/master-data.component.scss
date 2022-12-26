@@ -17,15 +17,7 @@
   .text-break{
     word-break: break-word;
   }
-  .submit{
-    display: flex;
-    margin: 10px 0;
-    button{
-      margin-left: auto;
-      width: 150px;
-      height: 40px;
-    }
-  }
+
   .toast-custom{
     position: fixed;
     bottom: 10px;
@@ -53,6 +45,9 @@
   flex-wrap: wrap;
   margin: 20px 0;
   .input-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 5px;
     min-width: 31px;
     min-height: 31px;

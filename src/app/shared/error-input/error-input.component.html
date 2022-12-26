@@ -1,14 +1,11 @@
-<div class="height-m">
-  <div
-    class="text-danger text-break"
-    *ngIf="textform?.invalid && (textform?.dirty || textform?.touched)"
-  >
+<div class="height-m" *ngIf="textform?.invalid && (textform?.dirty || textform?.touched)">
+  <div class="text-danger text-break">
     <div *ngIf="textform?.errors?.required">Input is required</div>
     <div *ngIf="textform?.errors?.type === 1">
       <div class="of-y">{{ subStart(textform?.errors?.invalidInput)
-      }}<span class="highlight">{{
-        subEnd(textform?.errors?.invalidInput)
-      }}</span></div>
+        }}<span class="highlight">{{
+          subEnd(textform?.errors?.invalidInput)
+          }}</span></div>
     </div>
 
     <div *ngIf="textform?.errors?.type === 2">

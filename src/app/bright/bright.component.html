@@ -1,14 +1,9 @@
-<div class="bright container">
+<button class="btn btn-link" (click)="openModal(template)">
+  Create stand bright
+</button>
+<div>
   <form [formGroup]="form">
     <!-- <ng-template *ngTemplateOutlet="buttonTemplate"></ng-template> -->
-    <div clas="row">
-      <div class="col-12">
-        <button class="btn btn-outline-primary" (click)="openModal(template)">
-        Create stand bright
-      </button>
-      </div>
-
-    </div>
 
     <ng-template #template>
       <div class="modal-header">
@@ -99,7 +94,16 @@
           <div class="row mt-1">
             <div class="col-md-12 col-lg-2">Name</div>
             <div class="col-sm-12 col-lg-10 height-m">
-              <input type="text" class="form-control" formControlName="name" />
+              <!-- <input type="text" class="form-control" formControlName="name" /> -->
+              <ng-select
+                formControlName="name"
+                placeholder="Select game name"
+                [items]="gameTypes"
+                bindValue="value"
+                bindLabel="label"
+                [clearable]="false"
+                [searchable]="false">
+            </ng-select>
               <div
                 class="text-danger pt-1"
                 *ngIf="name?.invalid && (name?.dirty || name?.touched)"

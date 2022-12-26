@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { validateInput } from '../shared/validatorString';
+import { GameTypes } from '../_consts/consts';
 import { TxRequest } from '../_model/tx.model';
 import { TxService } from '../_services/tx.service';
 
@@ -34,6 +35,7 @@ export class MasterDataComponent implements OnInit, OnDestroy {
   isSuccess = false;
   isFailure = false;
   length: number = 0;
+  gameTypes = GameTypes;
   constructor(private fb: FormBuilder, private txService: TxService) {}
 
   get textform() {
@@ -43,6 +45,7 @@ export class MasterDataComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.fb.group({
       textform: new FormControl('', [Validators.required, validateInput]),
+      name: [null, [Validators.required]],
     });
   }
 
@@ -89,12 +92,12 @@ export class MasterDataComponent implements OnInit, OnDestroy {
       return;
     }
     let numbers = String(this.form.getRawValue().textform).split(',').map(e=>e.trim());
-
+    const type = this.form.getRawValue().name;
     const val: TxRequest = {
       numbers: numbers.toString(),
       createdAt: new Date().toISOString(),
+      type,
     };
-
     this.reqSub?.unsubscribe();
 
     this.reqSub = this.txService.add(val).subscribe((res) => {

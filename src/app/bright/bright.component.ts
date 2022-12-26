@@ -9,6 +9,9 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ClipboardService } from 'ngx-clipboard';
 import { validateInput } from '../shared/validatorString';
 import { TxTableComponent } from '../_components/tx-table/tx-table.component';
+import { GameTypes } from '../_consts/consts';
+import { TxRequest } from '../_model/tx.model';
+import { TxService } from '../_services/tx.service';
 
 @Component({
   selector: 'app-bright',
@@ -23,8 +26,13 @@ export class BrightComponent extends TxTableComponent implements OnInit {
   resultNumber: string;
   resultTX: string;
   length: number = 0;
+  gameTypes = GameTypes;
 
-  constructor(private fb: FormBuilder, private modalService: BsModalService,    protected clipboardService: ClipboardService,
+  constructor(
+    private fb: FormBuilder,
+    private modalService: BsModalService,
+    protected clipboardService: ClipboardService,
+    private txService: TxService,
     ) {
     super(clipboardService);
   }
@@ -88,9 +96,25 @@ export class BrightComponent extends TxTableComponent implements OnInit {
       return;
     }
     const formValue: string = this.form.getRawValue().textform;
+    const type = this.form.getRawValue().name;
     this.resultNumber = formValue;
     const TX: string[] = this.convertTX(formValue.split(','));
     this.resultTX = TX.toString();
+
+    const val: TxRequest = {
+      numbers: this.resultNumber,
+      createdAt: new Date().toISOString(),
+      type,
+    };
+
+    this.txService.addBridge(val).subscribe(
+      (res) => {
+        this.hide();
+      },
+      (err) => {
+
+      }
+    );
   }
 
   convertTX(val: string[]) {

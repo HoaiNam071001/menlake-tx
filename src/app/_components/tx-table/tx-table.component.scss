@@ -3,6 +3,9 @@ $cellWH: 33px;
 
 :host {
   display: block;
+}
+
+.main-wrapper {
   overflow: auto;
 }
 
@@ -16,7 +19,7 @@ $cellWH: 33px;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
-  padding-top: 50px;
+  padding-top: 30px;
   position: relative;
 
   .time {

@@ -1,7 +1,16 @@
 <div>
   <div class="row">
     <div class="col-12 d-flex align-items-center">
-      <button class="btn btn-primary mb-3" (click)="refresh()">Refresh</button>
+      <!-- <button class="btn btn-primary mb-3" (click)="refresh()">Refresh</button> -->
+      <ng-select
+        [formControl]="gameTypeCtrl"
+        placeholder="Select game name"
+        [items]="GameTypes"
+        bindValue="value"
+        bindLabel="label"
+        [clearable]="false"
+        [searchable]="false">
+      </ng-select>
 
       <div class="btn-group ml-auto" dropdown>
         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
@@ -16,16 +25,14 @@
       </div>
       </div>
 
-    <div class="col-12">
+    <div class="col-12 mt-3">
       <app-tx-table
-        [txResponses]="txResponses"
-        [keyword]="keyword">
+        [txResponses]="txResponses">
       </app-tx-table>
     </div>
 
     <div class="col-12">
-
-      <div class="input-group mt-4">
+      <div class="input-group pt-4">
         <input #inputEle type="text" class="form-control" placeholder="Search T,X,T or Number (3,10,12,15,...)"
           [ngModel]="keyword"
           (ngModelChange)="onKeywordChange($event)"
@@ -38,6 +45,26 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <div class="col-12 mt-5">
+      <h6>Master Search Data</h6>
+      <div class="no-data" *ngIf="searchTxResponses.length === 0">No data to display</div>
+      <app-tx-table *ngFor="let i of searchTxResponses"
+        class="mt-3"
+        [numberStr]="i.numbers"
+        [keyword]="keyword">
+      </app-tx-table>
+    </div>
+
+    <div class="col-12 mt-5">
+      <h6>Bridge Search Data</h6>
+      <div class="no-data" *ngIf="searchBridgeResponses.length === 0">No data to display</div>
+      <app-tx-table *ngFor="let i of searchBridgeResponses"
+        class="mt-3"
+        [numberStr]="i.numbers"
+        [keyword]="keyword">
+      </app-tx-table>
     </div>
   </div>
 </div>

@@ -16,6 +16,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ErrorInputComponent } from './error-input/error-input.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const angularModules = [
   CommonModule,
@@ -37,6 +38,7 @@ const libraryModules = [
   TabsModule,
   AccordionModule,
   CollapseModule,
+  NgSelectModule,
 ];
 @NgModule({
   declarations: [

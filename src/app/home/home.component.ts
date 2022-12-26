@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
-import { TxSearchRequest, TxSearchResponse } from '../_model/tx.model';
+import { forkJoin } from 'rxjs';
+import { GameTypes } from '../_consts/consts';
+import { TxSearchRecordsRequest, TxResponse, TxSearchRequest } from '../_model/tx.model';
 import { TxService } from '../_services/tx.service';
 
 export const sizes = [200, 300, 400, 500, 600];
@@ -15,8 +18,13 @@ export class HomeComponent implements OnInit {
   size = sizes[0];
   sizes = sizes;
   isAllToday = -1;
-  txResponses: TxSearchResponse[] = [];
+  txResponses: TxResponse[] = [];
   numberStr = '';
+  GameTypes = GameTypes;
+
+  gameTypeCtrl = new FormControl(GameTypes[0].value);
+  searchTxResponses: TxResponse[] = [];
+  searchBridgeResponses: TxResponse[] = [];
 
   constructor(
     private txService: TxService,
@@ -32,7 +40,7 @@ export class HomeComponent implements OnInit {
   }
 
   fetch() {
-    let payload: TxSearchRequest;
+    let payload: TxSearchRecordsRequest;
     if (this.size === this.isAllToday) {
       payload = {
         allDaysFlag: true,
@@ -44,17 +52,17 @@ export class HomeComponent implements OnInit {
       };
     }
 
-    this.txService.search(payload)
+    this.txService.records(payload)
       .subscribe(res => {
         this.txResponses = res;
-      // this.numberStr = res.map(e => e.numbers).join(',');
-      console.log('this.numberStr', this.txResponses.map(e => e.numbers));
-    });
+      });
   }
 
   changeSize(size: number) {
     this.size = size;
     this.refresh();
+
+    this.search();
   }
 
   onKeywordChange(event: any) {
@@ -66,6 +74,40 @@ export class HomeComponent implements OnInit {
     if (keyword && keyword !== this.keyword) {
       this.keyword = keyword;
     }
+
+    this.search();
+  }
+
+  search() {
+    if (!this.keyword) {
+      this.resetSearchData();
+      return;
+    }
+
+    const searchPayload: TxSearchRequest = {
+      keyword: this.keyword,
+      numberOfRecords: this.size === this.isAllToday ? null : this.size,
+      type: this.gameTypeCtrl?.value,
+    };
+
+    forkJoin([
+      this.txService.search(searchPayload),
+      this.txService.searchBridge(searchPayload),
+    ])
+      .subscribe(
+        (datas) => {
+          this.searchTxResponses = datas[0];
+          this.searchBridgeResponses = datas[1];
+        },
+        (error) => {
+          this.resetSearchData();
+        }
+      );
+  }
+
+  resetSearchData() {
+    this.searchTxResponses = [];
+    this.searchBridgeResponses = [];
   }
 
   generateData() {
