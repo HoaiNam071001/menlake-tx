@@ -1,5 +1,5 @@
-<button class="btn btn-link" (click)="openModal(template)">
-  Create stand bright
+<button class="btn btn-link btn-create-bright" (click)="openModal(template)">
+  Create standard bridge
 </button>
 <div>
   <form [formGroup]="form">
@@ -7,10 +7,8 @@
 
     <ng-template #template>
       <div class="modal-header">
-        <h5 class="modal-title pull-left">Standard bright</h5>
-        <button type="submit" class="btn btn-info ml-2" (click)="reset()">
-          Reset
-        </button>
+        <h5 class="modal-title pull-left">Standard Bridge</h5>
+
         <button
           type="button"
           class="close btn-close pull-right"
@@ -22,13 +20,36 @@
       </div>
       <div class="modal-body">
         <div class="container">
+          <div class="row mt-1 mb-2">
+            <div class="col-2 my-auto">Name</div>
+            <div class="col-10">
+              <!-- <input type="text" class="form-control" formControlName="name" /> -->
+              <ng-select
+                class="select-game"
+                formControlName="nameBridge"
+                placeholder="Select game name"
+                [items]="gameTypes"
+                bindValue="value"
+                bindLabel="label"
+                [clearable]="false"
+                [searchable]="false">
+            </ng-select>
+              <div
+                class="text-danger pt-1"
+                *ngIf="nameBridge?.invalid && (nameBridge?.dirty || nameBridge?.touched)"
+              >
+                <div *ngIf="nameBridge?.errors?.required">Name is required</div>
+              </div>
+            </div>
+          </div>
+
           <div class="row mb-1">
             <div class="col-12 col-lg-2">
               <div class="d-flex flex-wrap">
                 <p>Preview</p>
                 <button
                 class="btn-primary rounded-circle btn-circle mx-2"
-                [disabled]="textform?.invalid"
+                [disabled]="textformBridge?.invalid"
                 (click)="convertData()"
               >
                 <i class="bi bi-arrow-clockwise"></i>
@@ -63,20 +84,16 @@
           </div>
 
           <div class="row my-1">
-            <div class="col-12">
-              <div class="p-1 ml-auto text-success" style="min-height:32px;"><span *ngIf="!textform?.invalid">{{length}} numbers</span></div>
-            </div>
             <div class="col-md-12 col-lg-2">Data
             </div>
             <div class="col-sm-12 col-lg-10">
               <textarea
                 class="w-full"
                 class="form-control text"
-                formControlName="textform"
+                formControlName="textformBridge"
                 (ngModelChange)="change()"
               ></textarea>
               <div class="mt-2">
-                <app-error-input [textform]="textform"></app-error-input>
               </div>
             </div>
           </div>
@@ -90,32 +107,20 @@
                 {{ input }}
               </button>
             </div>
-          </div>
-          <div class="row mt-1">
-            <div class="col-md-12 col-lg-2">Name</div>
-            <div class="col-sm-12 col-lg-10 height-m">
-              <!-- <input type="text" class="form-control" formControlName="name" /> -->
-              <ng-select
-                formControlName="name"
-                placeholder="Select game name"
-                [items]="gameTypes"
-                bindValue="value"
-                bindLabel="label"
-                [clearable]="false"
-                [searchable]="false">
-            </ng-select>
-              <div
-                class="text-danger pt-1"
-                *ngIf="name?.invalid && (name?.dirty || name?.touched)"
-              >
-                <div *ngIf="name?.errors?.required">Name is required</div>
-              </div>
+            <div class="col-12 height-m">
+              <app-error-input [textform]="textformBridge"></app-error-input>
             </div>
           </div>
 
-          <div class="row d-flex justify-content-end">
-            <button class="btn btn-light mr-1" (click)="hide()">Cancel</button>
-            <button type="submit" class="btn btn-dark m-1" (click)="onSubmit()">
+          <div class="row d-flex justify-content-end mt-1">
+            <div class="p-1 text-numbers mr-1 my-auto"><span >
+              {{!textformBridge?.invalid ? length + ' Numbers': "0"}}</span>
+            </div>
+            <button type="submit" class="btn ml-auto btn-info" (click)="reset()">
+              Reset
+            </button>
+            <button class="btn btn-light mx-2" (click)="hide()">Cancel</button>
+            <button type="submit" class="btn btn-dark" (click)="onSubmit()" [disabled]="form.invalid">
               Submit
             </button>
           </div>

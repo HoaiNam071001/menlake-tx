@@ -1,5 +1,4 @@
-
-<div class="main-wrapper">
+<div class="main-wrapper" #table>
   <div class="tx-table-wrapper" *ngIf="numbers.length > 0;">
     <div class="time-group" *ngIf="timeBlocks.length > 0">
       <ng-container *ngFor="let t of timeBlocks; let index=index">
@@ -10,7 +9,7 @@
         </div>
       </ng-container>
     </div>
-    <div class="tx-table">
+    <div class="tx-table" >
       <div class="time-group">
         <div class="time"></div>
       </div>
@@ -39,4 +38,6 @@
   <span class="badge badge-light">Selected: <span>{{selectedCells}}</span></span>
   <span class="btn btn-sm btn-light ml-1" (click)="clipboard()">Copy</span>
   <span class="btn btn-sm btn-light ml-1" (click)="clipboardAsTX()">Copy as TX</span>
+  <span class="btn btn-sm btn-light ml-1" (click)="clipboardAsXT()">Copy as XT</span>
 </div>
+

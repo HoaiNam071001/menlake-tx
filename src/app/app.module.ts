@@ -11,6 +11,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { BrightComponent } from './bright/bright.component';
 
 import { HomeComponent } from './home/home.component';
+import { StandardBridgeComponent } from './standard-bridge/standard-bridge.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HomeComponent } from './home/home.component';
     MasterDataComponent,
     BrightComponent,
     HomeComponent,
+    StandardBridgeComponent,
   ],
   imports: [
     BrowserModule,

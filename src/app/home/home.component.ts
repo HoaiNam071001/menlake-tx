@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { forkJoin } from 'rxjs';
 import { GameTypes } from '../_consts/consts';
 import { TxSearchRecordsRequest, TxResponse, TxSearchRequest } from '../_model/tx.model';
@@ -14,6 +15,8 @@ export const sizes = [200, 300, 400, 500, 600];
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  @ViewChild('popup') popup: TemplateRef<any>;
+
   keyword = '';
   size = sizes[0];
   sizes = sizes;
@@ -21,13 +24,16 @@ export class HomeComponent implements OnInit {
   txResponses: TxResponse[] = [];
   numberStr = '';
   GameTypes = GameTypes;
-
+  modalRef!: BsModalRef;
+  isBridge: boolean = false;
   gameTypeCtrl = new FormControl(GameTypes[0].value);
   searchTxResponses: TxResponse[] = [];
   searchBridgeResponses: TxResponse[] = [];
+  selected: TxResponse;
 
   constructor(
     private txService: TxService,
+    private modalService: BsModalService,
   ) { }
 
   ngOnInit(): void {
@@ -45,10 +51,12 @@ export class HomeComponent implements OnInit {
       payload = {
         allDaysFlag: true,
         time: moment().format('YYYY-MM-DD'),
+        type: this.gameTypeCtrl?.value
       };
     } else {
       payload = {
         numberOfRecords: this.size,
+        type: this.gameTypeCtrl?.value
       };
     }
 
@@ -137,4 +145,17 @@ export class HomeComponent implements OnInit {
     return rand;
   }
 
+  getTimeUI(time: string) {
+    return moment(time).format('HH:mm DD/MM/YYYY');
+  }
+
+  openModal(Tx: TxResponse, type: boolean) {
+    this.isBridge = type;
+    this.selected = Tx;
+    this.modalRef = this.modalService.show(this.popup);
+  }
+
+  hide(){
+    this.modalRef.hide();
+  }
 }

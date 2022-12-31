@@ -1,5 +1,10 @@
 .master-board{
-  margin: 20px;
+  .select-field{
+    width: 150px;
+  }
+  .btn-bright{
+    max-width: 50%;
+  }
   form{
     margin: 20px 0;
     width: 700px;
@@ -13,7 +18,16 @@
     resize:vertical;
 
   }
-
+  .text-numbers{
+    min-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    background: rgb(18, 140, 255);
+  }
   .text-break{
     word-break: break-word;
   }
@@ -37,13 +51,16 @@
     color: #fff;
     background-color: #fff0;
   }
+  .error-input{
+    height: 30px;
+  }
 }
 
 
 .input-board{
   display: flex;
   flex-wrap: wrap;
-  margin: 20px 0;
+  margin: 15px 0 5 0;
   .input-item{
     display: flex;
     align-items: center;

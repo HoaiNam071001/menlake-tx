@@ -11,7 +11,7 @@ export interface TxResponse {
   numbers: string;
   tox: string;
   createdAt: string;
-  type: GameType;
+  type: string;
   time: string;
 }
 
@@ -19,6 +19,7 @@ export interface TxSearchRecordsRequest {
   numberOfRecords?: number;
   allDaysFlag?: boolean;
   time?: string;
+  type: GameType;
 }
 
 export interface TxSearchRequest {

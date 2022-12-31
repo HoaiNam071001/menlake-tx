@@ -1,0 +1,31 @@
+.table{
+  max-width: 100%;
+  table-layout: fixed;
+  .id{
+    width: 40px;
+  }
+  .number{
+    overflow: hidden;
+  }
+  .tox{
+    overflow: hidden;
+  }
+  .time{
+    min-width: 100px;
+    max-width: 20%;
+    overflow: hidden;
+  }
+  .text-ellipsis{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .view{
+    width: 50px;
+    button{
+      width: 100%;
+      padding: 0px;
+    }
+  }
+
+}

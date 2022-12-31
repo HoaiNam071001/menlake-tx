@@ -45,7 +45,7 @@ export class MasterDataComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.fb.group({
       textform: new FormControl('', [Validators.required, validateInput]),
-      name: [null, [Validators.required]],
+      name: [this.gameTypes[0].value, [Validators.required]],
     });
   }
 

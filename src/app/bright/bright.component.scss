@@ -15,9 +15,28 @@
     opacity: 0.6;
   }
 }
+.text-numbers{
+  width: 100px;
+  max-width: 20%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgb(23, 106, 222);
+  white-space: nowrap;
+  border-radius: 5px;
+  text-align: center;
+}
 .height-m{
-  min-height: 50px;
+  min-height: 32px;
 }
 .ms-auto{
   margin-right: auto;
+}
+.btn-create-bright{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.select-game{
+  width: 150px;
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { ClipboardService } from 'ngx-clipboard';
 import { TxResponse } from 'src/app/_model/tx.model';
@@ -18,11 +18,13 @@ export interface TxCell {
   templateUrl: './tx-table.component.html',
   styleUrls: ['./tx-table.component.scss']
 })
-export class TxTableComponent implements OnInit, OnChanges {
+export class TxTableComponent implements OnInit, OnChanges, AfterViewChecked {
   @Input() numberStr = '';
   @Input() keyword = '';
   @Input() txResponses: TxResponse[];
+  @ViewChild('table') table: ElementRef;
 
+  ischange : boolean;
   numbers: number[] = [];
   columns: TxCell[][] = [];
   maxArr = [0, 1, 2, 3, 4];
@@ -38,6 +40,12 @@ export class TxTableComponent implements OnInit, OnChanges {
     this.resetSelectedIndex();
   }
 
+  ngAfterViewChecked(){
+    if(this.ischange && this.keyword === ''){
+      this.scroll();
+      this.ischange = false;
+    }
+  }
 
   ngOnInit(): void {
     // this.fetchData();
@@ -45,6 +53,7 @@ export class TxTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.fetchData();
+    this.ischange = true;
   }
 
   resetSelectedIndex() {
@@ -207,7 +216,16 @@ export class TxTableComponent implements OnInit, OnChanges {
     this.clipboardService.copy(this.selectedCells.map(e => this.isTai(e) ? 'T' : 'X').toString());
   }
 
+  clipboardAsXT() {
+    this.clipboardService.copy(this.selectedCells.map(e => !this.isTai(e) ? 'T' : 'X').toString());
+  }
+
   getTimeUI(time: string) {
     return moment(time).format('HH:mm DD/MM/YYYY');
+  }
+
+  scroll(){
+    let table = this.table?.nativeElement;
+    table?.scrollTo(table?.scrollWidth, 0);
   }
 }

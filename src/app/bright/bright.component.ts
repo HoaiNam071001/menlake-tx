@@ -37,26 +37,26 @@ export class BrightComponent extends TxTableComponent implements OnInit {
     super(clipboardService);
   }
 
-  get textform() {
-    return this.form.get('textform');
+  get textformBridge() {
+    return this.form.get('textformBridge');
   }
-  get name() {
-    return this.form.get('name');
+  get nameBridge() {
+    return this.form.get('nameBridge');
   }
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      textform: new FormControl('', [Validators.required, validateInput]),
-      name: new FormControl('', [Validators.required]),
+      textformBridge: new FormControl('', [Validators.required, validateInput]),
+      nameBridge: new FormControl(this.gameTypes[0].value, [Validators.required]),
     });
   }
 
   change(){
-    this.length = String(this.textform?.value).split(",").length || 0;
+    this.length = String(this.textformBridge?.value).split(",").length || 0;
   }
 
   convertData() {
-    this.numberStr = String(this.textform?.value);
+    this.numberStr = String(this.textformBridge?.value);
     this.columns = [];
     this.numbers = this.numberStr.split(',').map(e => +e) || [];
     this.getColumns();
@@ -80,14 +80,14 @@ export class BrightComponent extends TxTableComponent implements OnInit {
   }
 
   add(input: number) {
-    const end = this.textform?.value[this.textform?.value.length - 1];
+    const end = this.textformBridge?.value[this.textformBridge?.value.length - 1];
     const newValue =
-      this.textform?.value === ''
+      this.textformBridge?.value === ''
         ? input
-        : this.textform?.value + (end !== ',' ? ',' : '') + input;
-    this.form.controls['textform'].setValue(newValue);
+        : this.textformBridge?.value + (end !== ',' ? ',' : '') + input;
+    this.form.controls['textformBridge'].setValue(newValue);
     this.textCusorEnd();
-    if (this.textform?.valid) this.convertData();
+    if (this.textformBridge?.valid) this.convertData();
   }
 
   onSubmit() {
@@ -95,8 +95,8 @@ export class BrightComponent extends TxTableComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    const formValue: string = this.form.getRawValue().textform;
-    const type = this.form.getRawValue().name;
+    const formValue: string = this.form.getRawValue().textformBridge;
+    const type = this.form.getRawValue().nameBridge;
     this.resultNumber = formValue;
     const TX: string[] = this.convertTX(formValue.split(','));
     this.resultTX = TX.toString();
@@ -127,8 +127,8 @@ export class BrightComponent extends TxTableComponent implements OnInit {
   }
 
   reset(){
-    this.form.controls['textform'].reset('');
-    this.form.controls['name'].reset('');
+    this.form.controls['textformBridge'].reset('');
+    this.form.controls['nameBridge'].reset(this.gameTypes[0].value);
     this.convertData();
   }
 
